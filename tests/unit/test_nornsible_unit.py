@@ -86,11 +86,46 @@ def test_patch_inventory_basic_limit_host():
         logging={"enabled": False},
     )
     nr.inventory = patch_inventory(args, nr.inventory)
+    print(nr.inventory.hosts.keys())
+    assert set(nr.inventory.hosts.keys()) == {"sea-eos-1"}
+
+
+def test_patch_inventory_limit_host_capitalization():
+    args = ["-l", "sEa-EoS-1"]
+    args = parse_cli_args(args)
+    nr = InitNornir(
+        inventory={
+            "plugin": "nornir.plugins.inventory.simple.SimpleInventory",
+            "options": {
+                "host_file": f"{TEST_DIR}_test_nornir_inventory/hosts.yaml",
+                "group_file": f"{TEST_DIR}_test_nornir_inventory/groups.yaml",
+            },
+        },
+        logging={"enabled": False},
+    )
+    nr.inventory = patch_inventory(args, nr.inventory)
     assert set(nr.inventory.hosts.keys()) == {"sea-eos-1"}
 
 
 def test_patch_inventory_basic_limit_group():
     args = ["-g", "eos"]
+    args = parse_cli_args(args)
+    nr = InitNornir(
+        inventory={
+            "plugin": "nornir.plugins.inventory.simple.SimpleInventory",
+            "options": {
+                "host_file": f"{TEST_DIR}_test_nornir_inventory/hosts.yaml",
+                "group_file": f"{TEST_DIR}_test_nornir_inventory/groups.yaml",
+            },
+        },
+        logging={"enabled": False},
+    )
+    nr.inventory = patch_inventory(args, nr.inventory)
+    assert set(nr.inventory.hosts.keys()) == {"sea-eos-1"}
+
+
+def test_patch_inventory_limit_group_capitalization():
+    args = ["-g", "EoS"]
     args = parse_cli_args(args)
     nr = InitNornir(
         inventory={

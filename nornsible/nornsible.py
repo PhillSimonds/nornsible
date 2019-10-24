@@ -87,8 +87,11 @@ def patch_inventory(cli_args: dict, inv: Inventory) -> Inventory:
     if cli_args["limit"]:
         valid_hosts = []
         invalid_hosts = []
+        lower_keys = []
+        for key in inv.hosts.keys():
+            lower_keys.append(key.lower())
         for host in cli_args["limit"]:
-            if host in inv.hosts.keys():
+            if host in lower_keys:
                 valid_hosts.append(host)
             else:
                 invalid_hosts.append(host)
@@ -100,8 +103,11 @@ def patch_inventory(cli_args: dict, inv: Inventory) -> Inventory:
         inv = inv.filter(filter_func=lambda h: h.name in valid_hosts)
 
     elif cli_args["groups"]:
-        valid_groups = [g for g in cli_args["groups"] if g in inv.groups.keys()]
-        invalid_groups = [g for g in cli_args["groups"] if g not in inv.groups.keys()]
+        lower_keys = []
+        for key in inv.groups.keys():
+            lower_keys.append(key.lower())
+        valid_groups = [g for g in cli_args["groups"] if g in lower_keys]
+        invalid_groups = [g for g in cli_args["groups"] if g not in lower_keys]
         if invalid_groups:
             print(
                 "Group limit contained invalid group(s), ignoring: "
