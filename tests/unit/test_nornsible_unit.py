@@ -90,8 +90,8 @@ def test_patch_inventory_basic_limit_host():
     assert set(nr.inventory.hosts.keys()) == {"sea-eos-1"}
 
 
-def test_patch_inventory_limit_host_capitalization():
-    args = ["-l", "sEa-EoS-1"]
+def test_patch_inventory_limit_host_ignore_case():
+    args = ["-l", "UPPER-HOST"]
     args = parse_cli_args(args)
     nr = InitNornir(
         inventory={
@@ -104,7 +104,7 @@ def test_patch_inventory_limit_host_capitalization():
         logging={"enabled": False},
     )
     nr.inventory = patch_inventory(args, nr.inventory)
-    assert set(nr.inventory.hosts.keys()) == {"sea-eos-1"}
+    assert set(nr.inventory.hosts.keys()) == {"UPPER-HOST"}
 
 
 def test_patch_inventory_basic_limit_group():
@@ -124,8 +124,8 @@ def test_patch_inventory_basic_limit_group():
     assert set(nr.inventory.hosts.keys()) == {"sea-eos-1"}
 
 
-def test_patch_inventory_limit_group_capitalization():
-    args = ["-g", "EoS"]
+def test_patch_inventory_limit_group_ignore_case():
+    args = ["-g", "UPPER"]
     args = parse_cli_args(args)
     nr = InitNornir(
         inventory={
@@ -138,7 +138,7 @@ def test_patch_inventory_limit_group_capitalization():
         logging={"enabled": False},
     )
     nr.inventory = patch_inventory(args, nr.inventory)
-    assert set(nr.inventory.hosts.keys()) == {"sea-eos-1"}
+    assert set(nr.inventory.hosts.keys()) == {"UPPER-HOST"}
 
 
 def test_patch_config_basic_limit_workers():
